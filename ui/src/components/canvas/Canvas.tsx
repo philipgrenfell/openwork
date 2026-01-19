@@ -22,7 +22,6 @@ interface CanvasProps {
   selectedModel: ModelRef | null
   defaultModel: ModelRef | null
   onModelChange: (model: ModelRef) => void
-  onImportFolder: (files: FileList) => void
   onAttachFolder: (path: string) => void
   onReset: () => void
   sending?: boolean
@@ -40,7 +39,6 @@ export function Canvas({
   selectedModel,
   defaultModel,
   onModelChange,
-  onImportFolder,
   onAttachFolder,
   onReset,
   sending,
@@ -49,8 +47,8 @@ export function Canvas({
   const [composer, setComposer] = useState('')
   const [agentMode, setAgentMode] = useState<AgentMode>('build')
   
-  const taskStarted = task?.started ?? false
-  const showSteps = !!task && (taskStarted || steps.length > 0 || todos.length > 0 || sending)
+  const taskStarted = steps.length > 0 || sending
+  const showSteps = !!task && (taskStarted || todos.length > 0)
   
   const handleSend = () => {
     if (composer.trim()) {
@@ -107,9 +105,9 @@ export function Canvas({
             
             {/* Quick start tiles */}
             {!showSteps && (
-              <div className="mt-10 flex-1 flex items-center justify-center">
+              <div className="mt-8 flex-1 flex items-end justify-center pb-8">
                 <div className="w-full max-w-xl text-center animate-[openwork-fade_0.6s_ease-out]">
-                  <div className="text-[15px] text-neutral-500 mb-6">
+                  <div className="text-[15px] text-neutral-500 mb-4">
                     Pick a starting point to spin up a focused workspace.
                   </div>
                   <WelcomeTiles onTileClick={handleTileClick} />
@@ -143,7 +141,6 @@ export function Canvas({
                 selectedModel={selectedModel}
                 defaultModel={defaultModel}
                 onModelChange={onModelChange}
-                onImportFolder={onImportFolder}
                 onAttachFolder={onAttachFolder}
                 disabled={!task}
                 sending={sending}
