@@ -2,15 +2,6 @@ import { useState, useCallback, useEffect } from 'react'
 import { getMessages, sendMessage, abortSession } from '@/lib/api/sessions'
 import type { Message, Step, AgentMode, MessagePart, ToolPart, ModelRef } from '@/types'
 
-const TODO_DIRECTIVE =
-  'Always create and maintain a todo list using the todowrite tool, updating items as they complete.'
-
-function ensureTodoDirective(text: string) {
-  if (!text.trim()) return text
-  if (/(todowrite|todo list)/i.test(text)) return text
-  return `${text}\n\n${TODO_DIRECTIVE}`
-}
-
 function stripCode(text: string) {
   const withoutFences = text.replace(/```[\s\S]*?```/g, '')
   const withoutInline = withoutFences.replace(/`[^`]*`/g, '')
@@ -149,17 +140,16 @@ export function useMessages(sessionId: string | null, directory?: string) {
     try {
       setSending(true)
       setError(null)
-      const outgoing = ensureTodoDirective(text)
       
       // Add optimistic step
       setSteps(prev => [...prev, {
         id: `temp-${Date.now()}`,
         title: agent === 'plan' ? 'Planning' : 'Building',
-        detail: outgoing,
+        detail: text,
         status: 'running',
       }])
       
-      const response = await sendMessage(sessionId, outgoing, agent, model, { directory })
+      const response = await sendMessage(sessionId, text, agent, model, { directory })
       
       // Refresh messages to get the full response
       await fetchMessages()
