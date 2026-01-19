@@ -18,7 +18,7 @@ interface TodoPanelProps {
 export function TodoPanel({ todos }: TodoPanelProps) {
   return (
     <div className="mt-6">
-      <div className="text-sm font-semibold text-neutral-700">Todo</div>
+      <div className="text-sm font-semibold text-neutral-700">To do</div>
       <div className="mt-3 rounded-2xl border border-neutral-200/70 bg-white/70">
         <ScrollArea className="h-[200px]">
           <div className="p-3 space-y-3">

@@ -22,6 +22,7 @@ interface CanvasProps {
   selectedModel: ModelRef | null
   defaultModel: ModelRef | null
   onModelChange: (model: ModelRef) => void
+  onImportFolder: (files: FileList) => void
   onAttachFolder: (path: string) => void
   onReset: () => void
   sending?: boolean
@@ -39,6 +40,7 @@ export function Canvas({
   selectedModel,
   defaultModel,
   onModelChange,
+  onImportFolder,
   onAttachFolder,
   onReset,
   sending,
@@ -49,6 +51,10 @@ export function Canvas({
   
   const taskStarted = steps.length > 0 || sending
   const showSteps = !!task && (taskStarted || todos.length > 0)
+  
+  // Check if all todos are completed
+  const allTodosComplete = todos.length > 0 && todos.every(todo => todo.status === 'completed')
+  const taskStatus = taskStarted && task ? (allTodosComplete ? 'Complete' : 'In progress') : ''
   
   const handleSend = () => {
     if (composer.trim()) {
@@ -77,7 +83,7 @@ export function Canvas({
                     {taskStarted && task ? task.title : "Let's knock something off your list"}
                   </div>
                   <div className="text-sm text-neutral-500 mt-1">
-                    {taskStarted && task ? 'In progress' : (task ? task.title : 'Select or create a task')}
+                    {taskStarted && task ? taskStatus : (task ? task.title : 'Select or create a task')}
                   </div>
                 </div>
               </div>
@@ -141,6 +147,7 @@ export function Canvas({
                 selectedModel={selectedModel}
                 defaultModel={defaultModel}
                 onModelChange={onModelChange}
+                onImportFolder={onImportFolder}
                 onAttachFolder={onAttachFolder}
                 disabled={!task}
                 sending={sending}
