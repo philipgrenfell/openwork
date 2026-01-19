@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Production builds
+dist/
+build/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+
+# Editor
+.DS_Store
+*.swp
+.idea/
+
+# TypeScript
+*.tsbuildinfo
+
+# Process IDs
+*.pid
