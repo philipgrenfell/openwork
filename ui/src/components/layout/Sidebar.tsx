@@ -37,8 +37,8 @@ export function Sidebar({
           <div className="text-xs uppercase tracking-[0.2em] text-neutral-400 mb-3">
             Tasks
           </div>
-          <div className="rounded-2xl border border-neutral-200/70 bg-white/70">
-            <ScrollArea className="h-[420px]">
+          <div className="rounded-2xl border border-neutral-200/70 bg-white/70 flex-1 flex flex-col">
+            <ScrollArea className="flex-1">
               {loading ? (
                 <div className="p-4 text-center text-sm text-neutral-400">
                   Loading tasks...
